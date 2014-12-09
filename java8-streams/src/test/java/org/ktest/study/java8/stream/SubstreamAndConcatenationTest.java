@@ -58,6 +58,7 @@ public class SubstreamAndConcatenationTest {
                    .collect(Collectors.toList());
             assertThat(ints.get(0), is(11));
             assertThat(ints, hasSize(10));
+            System.out.println(ints);
 	}
 
 }

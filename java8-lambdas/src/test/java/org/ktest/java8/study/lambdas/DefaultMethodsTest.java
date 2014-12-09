@@ -12,7 +12,7 @@ interface IA {
 	}
 }
 
-interface IB_ext_A extends IA {
+interface IB_ext_IA extends IA {
 	@Override
     default String sayHi() {
 		return "B says Hi";
@@ -31,11 +31,11 @@ class D {
 	}
 }
 
-class E_ext_D_impl_IB extends D implements IB_ext_A {
+class E_ext_D_impl_IB extends D implements IB_ext_IA {
 	
 }
 
-class F_impl_IC_IB implements IC,IB_ext_A {
+class F_impl_IC_IB implements IC,IB_ext_IA {
 	// concrete implementation of sayHi() is required
 	// as the duplicate default methods of C and B 
 	// are in conflict
@@ -45,12 +45,15 @@ class F_impl_IC_IB implements IC,IB_ext_A {
 	}
 }
 
+class G_impl_IB implements IB_ext_IA{    
+}
+
 public class DefaultMethodsTest {
 	
 	@Test
 	public void testDefaultMethods() {
 		
-		IB_ext_A iB = new IB_ext_A() { // interface B extends A
+		IB_ext_IA iB = new IB_ext_IA() { // interface B extends A
 		};		
 		IA iA = iB;
 		
@@ -61,7 +64,10 @@ public class DefaultMethodsTest {
 		assertThat(e_ext_D_impl_IB.sayHi(), is("D says Hi")); 
 		
 		F_impl_IC_IB f_impl_IC_IB = new F_impl_IC_IB(); 
-		assertThat(f_impl_IC_IB.sayHi(), is("F and C says Hi"));  
+		assertThat(f_impl_IC_IB.sayHi(), is("F and C says Hi"));
+		
+		G_impl_IB g_impl_IB = new G_impl_IB();
+		assertThat(g_impl_IB.sayHi(), is("B says Hi"));
     }
 
 }

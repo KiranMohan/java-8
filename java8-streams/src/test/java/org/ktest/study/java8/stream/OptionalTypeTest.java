@@ -18,16 +18,18 @@ public class OptionalTypeTest {
     
     @Test
     public void creatingOptionalType() {
-        Optional<Integer> value = Optional.of(1);
+        Integer i = 1;
+        Optional<Integer> value = Optional.of(i);
         System.out.println("value is " + value);
         
         // value = Optional.of(null); // *** Exception ***
         // Cannot create Optional type with null value.
         // Use Option.ofNullable()
         
-        value = Optional.ofNullable(1);
+        value = Optional.ofNullable(i);
         System.out.println("Optional.ofNullable(1): value is " + value);
         
+        i = null;
         value = Optional.ofNullable(null);
         System.out.println("Optional.ofNullable(null): value is " + value);
 
@@ -81,9 +83,11 @@ public class OptionalTypeTest {
     @Test
     public void returnDefaultValueIfNotPresent() {
         Optional<Integer> value1 = Optional.empty();
-
+        
+        // return a default value
         assertThat(value1.orElse(10), is(10));
         
+        // return value produced by a generator function
         assertThat(value1.orElseGet(() -> new Random().nextInt()), notNullValue());
         assertThat(value1.orElseGet(() -> 10), is(10));
         

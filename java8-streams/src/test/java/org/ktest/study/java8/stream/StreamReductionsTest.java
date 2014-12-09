@@ -57,6 +57,10 @@ public class StreamReductionsTest {
                                          );
         System.out.println("number of characters : " + result3);
         // -------------------------------------------------------------------------
+        
+        // easier to do the third form this way.
+        Integer result4 = wordList.parallelStream().mapToInt(String::length).sum();
+        System.out.println("number of characters : " + result4);
     }
     
     

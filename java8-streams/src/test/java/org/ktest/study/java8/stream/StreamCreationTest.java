@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.event.ListSelectionEvent;
@@ -65,12 +66,15 @@ public class StreamCreationTest {
 	@Test
 	public void iterateStream(){
 		// --------------------- Stream.iterate() ----------------------------
-		Stream<Integer> intSeqStream = Stream.iterate(1, x -> ++x);	// infinite stream
+		Stream<Integer> intSeqStream = Stream.iterate(1, x -> x + 2);	// infinite stream
 		
 		Integer[] intSeqArray = intSeqStream.limit(10).toArray(Integer[]::new);
-		assertThat(intSeqArray, arrayWithSize(10));			
-		for(int i = 1; i < intSeqArray.length; ++i){
-			assertThat(intSeqArray[i], is(i + 1));
+		
+		// assert 10 elements
+		assertThat(intSeqArray, arrayWithSize(10));	
+		
+		for(int i = 0; i < intSeqArray.length; ++i ){
+			assertThat(intSeqArray[i], is(2*i + 1));
 		}
 		System.out.println(Arrays.toString(intSeqArray));
 		// -------------------------------------------------------------------

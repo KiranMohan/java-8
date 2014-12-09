@@ -74,7 +74,7 @@ public class CollectingResultsTest {
                 + ints.stream().map(x -> x.toString()).collect(Collectors.joining(":")));
         
         System.out.println("Joining to single string with delimiter, prefix, suffix : "
-                + ints.stream().map(x -> x.toString()).collect(Collectors.joining(":", "[", "]")));
+                + ints.stream().map(x -> x.toString()).collect(Collectors.joining(", ", "[", "]")));
         
         System.out.println("--- ---");
     }
@@ -149,8 +149,8 @@ public class CollectingResultsTest {
 		Map<String, Set<String>> countryLanguagesMap = Stream.of(Locale.getAvailableLocales()).collect(
 		        Collectors.toMap(
 		        		Locale::getDisplayCountry, 
-		        		t -> { Set<String> s = new HashSet<String>();
-		        			s.add(t.getDisplayLanguage());
+		        		locale -> { Set<String> s = new HashSet<String>();
+		        			s.add(locale.getDisplayLanguage());
 		        			return s;
 		        		}, 
 		        		(t, u) -> {	

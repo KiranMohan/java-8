@@ -12,16 +12,20 @@ public class MethodReferencesTest {
 
 	@Test
 	public void objectInstanceMethod() {
-		MyButton b = new MyButton();
-		b.addActionListener(System.out::println); // same as x -> System.out.println(x)
-		b.keyPressed();
-		b.keyPressed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "blah"));
+		MyButton button = new MyButton();
+		button.addActionListener(System.out::println); // same as (event) -> System.out.println(event)
+		button.keyPressed();
+		button.keyPressed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "blah"));
+	}
+	
+	public static Double applyFunction(Double input1, Double input2, BiFunction<Double, Double, Double> function){
+	    return function.apply(input1, input2);
 	}
 
 	@Test
 	public void classStaticMethod() {
 		BiFunction<Double, Double, Double> power;
-		// old way
+		// old way as anonymous class
 		//power = new BiFunction<Double, Double, Double>() {
 		//		@Override
 		//		public Double apply(Double t, Double u) {
@@ -29,9 +33,14 @@ public class MethodReferencesTest {
 		//		}
 		//};
 
-		//power = (x,y) -> Math.pow(x,y); 		
+		// as lambda expression without method references 
+		//power = (x,y) -> Math.pow(x,y); 	
+		
+		// with method references
 		power = Math::pow; // more concise
-		System.out.println(power.apply(2.0, 2.0));
+		
+		System.out.println(applyFunction(2.0, 4.0, Math::pow));
+	    System.out.println(applyFunction(2.0, 4.0, Math::max));
 	}
 
 	@Test
