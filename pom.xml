@@ -27,6 +27,7 @@
         <module>java8-streams</module>
         
         <module>java8-misc-goodies</module>
+        <module>java8-for-the-really-impatient</module>
     </modules>
     <dependencies>
     	<dependency>
