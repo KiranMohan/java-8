@@ -5,11 +5,7 @@
     <artifactId>java-8</artifactId>
     <version>DYNAMIC-SNAPSHOT</version>
   </parent>
-  <artifactId>java8-for-the-really-impatient</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>java8-for-the-really-impatient</artifactId>  
   <name>Java 8 For The Really Impatient Excercises</name>
-  <description>Java 8 For The Really Impatient Excercises</description>
-  <modules>
-  	<module>chapter-3</module>
-  </modules>
+  <description>Solutions to selected excersises in Java 8 For The Really Impatient</description>
 </project>
