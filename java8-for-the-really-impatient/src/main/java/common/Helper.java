@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -51,5 +53,31 @@ public class Helper {
             getSubDirectories(d, subDirectoriesList);
         }
     }
+    
+    /**
+     * Find contents for the given parent directory and return it in the
+     * result list
+     * @param directory 
+     * @param result the files/directories found are returned in this list
+     */
+    public static void getDirectoryContents(File directory, List<File> result) {
+        List<File> subDirectories = new LinkedList<>();
+
+        // first: find files under current directory
+        File[] files = directory.listFiles(f -> {
+            if (f.isDirectory()) {
+                subDirectories.add(f);
+            }
+            return true;
+        });
+        Collections.addAll(result, files);
+        
+        // second: find files under subdirectories
+        for (File d: subDirectories) {
+            getDirectoryContents(d, result);
+        }
+    }
+    
+    
 
 }
