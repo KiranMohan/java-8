@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
+import common.Helper;
+
 /*
  * Using the list(FilenameFilter) method of the java.io.File class, write a 
  * method that returns all files in a given directory with a given extension. 
@@ -37,7 +39,7 @@ public class Ex3 {
 		String extension = br.readLine();
 
 		List<File> subDirectories = new LinkedList<File>();
-		Ex2.getSubDirectories(parentDirectory, subDirectories);
+		Helper.getSubDirectories(parentDirectory, subDirectories);
 
 		for (File d : subDirectories) {
 			for (File f : findFilesWithExtension(d, extension)) {
