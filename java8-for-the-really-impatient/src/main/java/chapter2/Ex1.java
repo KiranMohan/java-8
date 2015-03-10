@@ -36,14 +36,11 @@ public class Ex1 {
         String[] words = Helper.getWordsAsArray("src/main/resources/alice.txt");
         Predicate<String> filter = w -> w.length() > 6;
 
-        System.out.println("count(single thead) : "
-                + singleThreadCountWords(words, filter));
-        System.out.println("count(parallelized) : "
-                + parallelCountWords(words, filter));
+        System.out.println("count(single thead) : " + singleThreadCountWords(words, filter));
+        System.out.println("count(parallelized) : " + parallelCountWords(words, filter));
     }
 
-    public static int singleThreadCountWords(String[] words,
-            Predicate<String> filter) {
+    public static int singleThreadCountWords(String[] words, Predicate<String> filter) {
         int count = 0;
         for (String w : words) {
             if (filter.test(w))
@@ -55,21 +52,16 @@ public class Ex1 {
     /**
      * @param words
      */
-    public static int parallelCountWords(String[] words,
-            Predicate<String> filter) {
+    public static int parallelCountWords(String[] words, Predicate<String> filter) {
 
-        ExecutorService executor = Executors
-                .newFixedThreadPool(NUM_OF_PROCESSORS);
-        List<Future<Integer>> results = new ArrayList<Future<Integer>>(
-                NUM_OF_PROCESSORS);
+        ExecutorService executor = Executors.newFixedThreadPool(NUM_OF_PROCESSORS);
+        List<Future<Integer>> results = new ArrayList<Future<Integer>>(NUM_OF_PROCESSORS);
 
         int sliceLength = words.length / NUM_OF_PROCESSORS;
         for (int from = 0; from < words.length; from += sliceLength) {
             int to = from + sliceLength;
-            String[] slice = Arrays.copyOfRange(words, from,
-                    to > words.length ? words.length : to);
-            results.add(executor.submit(
-                    () -> singleThreadCountWords(slice, filter)));
+            String[] slice = Arrays.copyOfRange(words, from, to > words.length ? words.length : to);
+            results.add(executor.submit(() -> singleThreadCountWords(slice, filter)));
         }
 
         executor.shutdown();
