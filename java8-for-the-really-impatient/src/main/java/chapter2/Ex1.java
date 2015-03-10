@@ -5,6 +5,15 @@
  */
 package chapter2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.function.Predicate;
+
 import common.Helper;
 
 /**
@@ -17,18 +26,67 @@ counter. Why?)
  *
  */
 public class Ex1 {
+	static final int NUM_OF_PROCESSORS = 4;
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		String[] words = Helper.getWordsAsArray("src/main/resources/alice.txt");
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        String[] words = Helper.getWordsAsArray("src/main/resources/alice.txt");
-        int count = 0;        
+		Predicate<String> filter = w -> w.length() > 6;
+		
+		int count = 0;
+		for (String w : words) {
+			if (filter.test(w))
+				count++;
+		}
+		System.out.println("count(single thead) : " + count);
+
+		parallelCountWords(words, filter);
+	}
+
+	
+	public static int countWords(String [] words, Predicate<String> filter) {
+		int count = 0;
         for (String w : words) {
-            if (w.length() > 12)
+            if (filter.test(w))
                 count++;
         }
-        System.out.println(count);
-    }
+        return count;
+	}
+	
+
+	/**
+	 * @param words
+	 */
+	public static void parallelCountWords(String[] words, Predicate<String> filter) {
+		
+		ExecutorService executor = Executors.newFixedThreadPool(NUM_OF_PROCESSORS);
+        List<Future<Integer>> results = new ArrayList<Future<Integer>>(NUM_OF_PROCESSORS);
+        
+        int sliceLength = words.length / NUM_OF_PROCESSORS;
+        for(int from = 0; from < words.length; from += sliceLength) {
+        	int to = from + sliceLength;
+        	String [] slice = Arrays.copyOfRange(words, from, to > words.length ? words.length : to);
+        	results.add(executor.submit(()->countWords(slice, filter)));        	
+        }
+        
+        executor.shutdown();
+        
+        int count = 0;
+        for(Future<Integer> result : results) {
+        	try {
+				count += result.get();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        System.out.println("count(parallelized) : " + count);
+	}
+    
+    
 
 }
