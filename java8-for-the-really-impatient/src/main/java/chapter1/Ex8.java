@@ -33,10 +33,11 @@ public class Ex8 {
         String[] names = { "Peter", "Paul", "Mary" };
         List<Runnable> runners = new ArrayList<>();
         
-        // the below code does not work. 
+        // the below code does not work.
         // the variable "i" must be effectively final.
-        //for (int i = 0; i < names.length; i++) 
-        //    runners.add(() -> System.out.println(names[i]));
+        /* for (int i = 0; i < names.length; i++) 
+            runners.add(() -> System.out.println(names[i]));
+        */
         
         for (String name : names)
             runners.add(() -> System.out.println(name));
