@@ -5,6 +5,8 @@
  */
 package chapter1;
 
+import java.util.concurrent.Callable;
+
 interface RunnableEx {
     public void run() throws Exception;
 }
@@ -27,11 +29,29 @@ public class Ex6_UncheckExceptions {
         };
     }
     
+    public static Runnable uncheck(Callable<Void> runEx) {
+        return () -> {
+            try {
+                runEx.call();
+            } catch(Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        };
+    }
+    
     /**
      * @param args
      */
     public static void main(String[] args) {        
-        uncheck(()->Thread.sleep(100));
+        uncheck(()-> {
+        	System.out.println("runnable");
+        	Thread.sleep(100);
+        }).run();
+        
+        uncheck(()->{
+        	System.out.println("callable");
+        	return null;
+        }).run();
     }
 
 }
