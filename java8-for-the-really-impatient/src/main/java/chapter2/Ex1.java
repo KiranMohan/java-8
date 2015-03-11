@@ -27,7 +27,7 @@ import common.Helper;
  *
  */
 public class Ex1 {
-    static final int NUM_OF_PROCESSORS = 4;
+    static final int NUM_OF_PROCESSORS = 4; // or Runtime.getRuntime().availableProcessors()
 
     /**
      * @param args
@@ -60,7 +60,7 @@ public class Ex1 {
         int sliceLength = words.length / NUM_OF_PROCESSORS;
         for (int from = 0; from < words.length; from += sliceLength) {
             int to = from + sliceLength;
-            String[] slice = Arrays.copyOfRange(words, from, to > words.length ? words.length : to);
+            String[] slice = Arrays.copyOfRange(words, from, Math.min(to, words.length));
             results.add(executor.submit(() -> singleThreadCountWords(slice, filter)));
         }
 
