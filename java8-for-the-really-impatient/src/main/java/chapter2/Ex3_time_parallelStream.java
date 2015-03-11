@@ -40,8 +40,8 @@ public class Ex3_time_parallelStream {
             acc2 += timeStreamProcessing(Stream.of(words).parallel());
         }
 
-        System.out.println("Single Thread stream: " + acc1);
-        System.out.println("Parallel Thread stream: " + acc2);
+        System.out.println("Single Thread stream: " + acc1/FUNC_REPEAT_COUNT);
+        System.out.println("Parallel Thread stream: " + acc2/FUNC_REPEAT_COUNT);
         
         // result: parallel streams slower???
         // Single Thread stream: 516
