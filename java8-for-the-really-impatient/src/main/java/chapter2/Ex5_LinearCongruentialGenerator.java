@@ -31,7 +31,9 @@ public class Ex5_LinearCongruentialGenerator {
 //        Stream.generate(generator::next).limit(10l).forEach(System.out::println);
         
         // OR simply
-        Stream.iterate(0l, x -> (a * x + c) % m).limit(10l).forEach(System.out::println);
+        Stream.iterate(0l, x -> (a * x + c) % m)
+              .limit(10l)
+              .forEach(System.out::println);
 
     }
 
