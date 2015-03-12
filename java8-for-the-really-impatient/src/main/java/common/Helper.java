@@ -78,6 +78,17 @@ public class Helper {
         }
     }
     
-    
+    /**
+     * 
+     * @param start
+     * @param interval
+     * @param numberOfTerms
+     * @return
+     */
+    public static List<Integer> getIntegerSequence(final int start, final int interval, final int numberOfTerms) {
+        return Stream.iterate(start, i -> i += interval)
+                     .limit(numberOfTerms)
+                     .collect(Collectors.toList());
+    }
 
 }
