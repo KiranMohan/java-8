@@ -54,12 +54,12 @@ public class Ex10_Average {
         DoubleSummaryStatistics expectedStats = doubles.stream()
                                                        .mapToDouble(Double::doubleValue)
                                                        .summaryStatistics();
-        System.out.println("correct average    : " + expectedStats.getAverage());
+        System.out.println("correct average     : " + expectedStats.getAverage());
         
         
         // average_sumByCount
         Double ave1 = average_sumByCount(doubles.stream());
-        System.out.println("average_sumByCount : " + ave1);
+        System.out.println("average_sumByCount  : " + ave1);
         assertEquals(expectedStats.getAverage(), ave1, 0.0001);
         
         // average_usingReduce
