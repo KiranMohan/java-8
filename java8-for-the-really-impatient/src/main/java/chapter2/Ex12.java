@@ -7,7 +7,6 @@ package chapter2;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import common.Helper;
@@ -34,7 +33,6 @@ public class Ex12 {
             if (s.length() < 12)
                 shortWords[s.length()].getAndIncrement();
         });
-        // Error—race condition!
         System.out.println(Arrays.toString(shortWords));
     }
 
