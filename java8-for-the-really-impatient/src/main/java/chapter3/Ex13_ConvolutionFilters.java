@@ -6,7 +6,7 @@
 package chapter3;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -36,7 +36,7 @@ import javafx.stage.Stage;
  */
 public class Ex13_ConvolutionFilters extends Application {
 
-    public static ColorTransformer2 blur(Image image) {
+    public static ColorTransformer blur(Image image) {
         return (x, y, c) -> {
             int w = (int) image.getWidth();
             int h = (int) image.getHeight();
@@ -56,7 +56,7 @@ public class Ex13_ConvolutionFilters extends Application {
         };
     }
     
-    public static ColorTransformer2 edgeDetect(Image image) {
+    public static ColorTransformer edgeDetect(Image image) {
         return (x, y, c) -> {
             Color n = 0 <= y-1               ? image.getPixelReader().getColor(x, y-1) : Color.BLACK;
             Color e = x+1 < image.getWidth() ? image.getPixelReader().getColor(x+1, y) : Color.BLACK;
@@ -93,79 +93,54 @@ public class Ex13_ConvolutionFilters extends Application {
     }
 }
 
-@FunctionalInterface
-interface ColorTransformer2 {
-    default boolean isPerformedEagerly() {
-        return false;
-    }
-    Color apply(int x, int y, Color colorAtXY);
-}
-
 class LatentImage2 {
     private Image in;
-    private List<ColorTransformer2> pendingOperations;
+    private List<List<ColorTransformer>> pendingOperations;
 
     public static LatentImage2 from(Image in) {
         LatentImage2 result = new LatentImage2();
         result.in = in;
         result.pendingOperations = new ArrayList<>();
+        result.pendingOperations.add(new ArrayList<>());
         return result;
     }
 
     LatentImage2 transform(UnaryOperator<Color> f) {
-        pendingOperations.add((x, y, c) -> f.apply(c));
+        pendingOperations.get(pendingOperations.size() -1).add((x, y, c) -> f.apply(c));
         return this;
     }
 
-    LatentImage2 transform(ColorTransformer2 c) {
-        pendingOperations.add(c);
+    LatentImage2 transform(ColorTransformer c) {
+        pendingOperations.get(pendingOperations.size() -1).add(c);
         return this;
     }
     
-    LatentImage2 transformEagerly(ColorTransformer2 c) {
-        pendingOperations.add(new ColorTransformer2() {
-
-            public boolean isPerformedEagerly() {
-                return true;
-            }
-
-            @Override
-            public Color apply(int x, int y, Color colorAtXY) {               
-                return c.apply(x, y, colorAtXY);
-            }
-        });
+    LatentImage2 transformEagerly(ColorTransformer c) {
+        pendingOperations.add(Arrays.asList(c)); // add eager operation in a separate list of it own
+        pendingOperations.add(new ArrayList<ColorTransformer>());
         return this;
     }
     
     public Image toImage() {
         Image image = in;
-        List<ColorTransformer2> executeOperations = new LinkedList<ColorTransformer2>();
-        for (ColorTransformer2 t : pendingOperations) {
-            if (!t.isPerformedEagerly()) {
-                executeOperations.add(t);
-            } else {
-                image = applyTransforms(image, executeOperations); // execute the pending lazy operations 
-                executeOperations.add(t);
-                image = applyTransforms(image, executeOperations); // now execute the current eager operation alone
-            }
+        for (List<ColorTransformer> executeOperations : pendingOperations) {
+            if (executeOperations.size() > 0) 
+                image = applyTransforms(image, executeOperations);
         }
-        if (executeOperations.size() > 0) 
-            image = applyTransforms(image, executeOperations);
         return image;
     }
 
-    private Image applyTransforms(Image image, List<ColorTransformer2> executeOperations) {
+    private Image applyTransforms(Image image, List<ColorTransformer> executeOperations) {
         int width = (int) image.getWidth();
         int height = (int) image.getHeight();
         WritableImage out = new WritableImage(width, height);
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++) {
                 Color c = image.getPixelReader().getColor(x, y);
-                for (ColorTransformer2 f : executeOperations)
+                for (ColorTransformer f : executeOperations)
                     c = f.apply(x, y, c);
                 out.getPixelWriter().setColor(x, y, c);
             }
-        executeOperations.clear();
         return out;
     }
 }
