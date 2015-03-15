@@ -21,10 +21,11 @@ public class Ex12 extends Application {
 		};
 
 		Image image = new Image("eiffel-tower.jpg");
-		Image finalImage = LatentImage.from(image).transform(brightner)
-				.transform(Color::grayscale).toImage();
-		stage.setScene(new Scene(new HBox(new ImageView(image), new ImageView(
-				finalImage))));
+		Image finalImage = LatentImage.from(image)
+                        		      .transform(brightner)
+                        			  .transform(Color::grayscale)
+                        			  .toImage();
+        stage.setScene(new Scene(new HBox(new ImageView(image), new ImageView(finalImage))));
 		stage.show();
 	}
 
