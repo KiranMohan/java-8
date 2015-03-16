@@ -116,16 +116,25 @@ class LatentImage2 {
     }
     
     LatentImage2 transformEagerly(ColorTransformer c) {
-        pendingOperations.add(Arrays.asList(c)); // add eager operation in a separate list of it own
+        // add eager operation in a separate list of it own
+        if (pendingOperations.get(pendingOperations.size() -1).size() == 0)
+            pendingOperations.get(pendingOperations.size() -1).add(c);
+        else 
+            pendingOperations.add(Arrays.asList(c)); 
+        
+        // add an empty list for the next set of operations
         pendingOperations.add(new ArrayList<ColorTransformer>());
         return this;
     }
     
     public Image toImage() {
         Image image = in;
+        // the last list of operations can be empty. if so, remove it.
+        if (pendingOperations.get(pendingOperations.size() -1).size() == 0) {
+            pendingOperations.remove(pendingOperations.size() -1);
+        }
         for (List<ColorTransformer> executeOperations : pendingOperations) {
-            if (executeOperations.size() > 0) 
-                image = applyTransforms(image, executeOperations);
+            image = applyTransforms(image, executeOperations);
         }
         return image;
     }
