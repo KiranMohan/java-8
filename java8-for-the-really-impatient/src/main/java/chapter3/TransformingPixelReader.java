@@ -15,7 +15,7 @@ import javafx.scene.image.WritablePixelFormat;
 import javafx.scene.paint.Color;
 
 class TransformingPixelReader implements javafx.scene.image.PixelReader {
-    private final javafx.scene.image.PixelReader origReader;
+    private final javafx.scene.image.PixelReader parentPixelReader;
     private Color[][] color;
     private final PixelTransformer transformer;
 
@@ -24,7 +24,7 @@ class TransformingPixelReader implements javafx.scene.image.PixelReader {
             final int height, 
             final PixelReader parentPixelReader, 
             final PixelTransformer transformer) {
-        this.origReader = parentPixelReader;
+        this.parentPixelReader = parentPixelReader;
         color = new Color[width][height];
         this.transformer = transformer;
     }
@@ -35,7 +35,7 @@ class TransformingPixelReader implements javafx.scene.image.PixelReader {
     @Override
     public Color getColor(int x, int y) {
         if (color[x][y] == null) {
-            color[x][y] = transformer.apply(x,y,origReader);
+            color[x][y] = transformer.apply(x,y,parentPixelReader);
         }
         return color[x][y];
     }
