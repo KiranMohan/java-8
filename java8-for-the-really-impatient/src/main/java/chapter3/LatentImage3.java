@@ -5,8 +5,6 @@
  */
 package chapter3;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.UnaryOperator;
 
 import javafx.scene.image.Image;
@@ -21,37 +19,41 @@ import javafx.scene.paint.Color;
 
 
 class LatentImage3 {
-    Image in;
-    List<PixelTransformer> pendingOperations;
+    private PixelReader reader;
+    private final int width;
+    private final int height;
+
+    /**
+     * @param reader
+     * @param width
+     * @param height
+     */
+    public LatentImage3(Image in) {
+        super();
+        this.reader = in.getPixelReader();
+        this.width = (int) in.getWidth();
+        this.height = (int) in.getHeight();
+    }
 
     public static LatentImage3 from(Image in) {
-        LatentImage3 result = new LatentImage3();
-        result.in = in;
-        result.pendingOperations = new ArrayList<>();
-        return result;
+        return new LatentImage3(in);
     }
 
     LatentImage3 transform(UnaryOperator<Color> f) {
-        pendingOperations.add((x, y, reader) -> f.apply(reader.getColor(x, y)));
-        return this;
+        return transform((x, y, reader) -> f.apply(reader.getColor(x, y)));
     }
 
-    LatentImage3 transform(PixelTransformer p) {
-        pendingOperations.add(p);
+    LatentImage3 transform(PixelTransformer t) {
+        reader = new TransformingPixelReader(width, height, reader, t);
         return this;
     }
 
     public Image toImage() {
-        int width = (int) in.getWidth();
-        int height = (int) in.getHeight();
-        PixelReader reader = in.getPixelReader();
-        for (int i = 0; i < pendingOperations.size(); ++i) {
-            reader = new TransformingPixelReader(width, height, reader, pendingOperations.get(i));       
-        }
         WritableImage out = new WritableImage(width, height);
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++) {
-               out.getPixelWriter().setColor(x, y, reader.getColor(x, y));
+               out.getPixelWriter()
+                  .setColor(x, y, reader.getColor(x, y));
             }
         return out;
     }
