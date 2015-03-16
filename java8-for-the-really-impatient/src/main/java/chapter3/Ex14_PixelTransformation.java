@@ -74,6 +74,8 @@ public class Ex14_PixelTransformation extends Application {
     public void start(Stage stage) {
 
         Image image = new Image("queen-mary.png");
+        // the actual solution for this question is in 
+        // class LatentImage3 and class TransformingPixelReader 
         Image finalImage = LatentImage3.from(image)
                                        .transform(Color::brighter)
                                        .transform(blur(image))
