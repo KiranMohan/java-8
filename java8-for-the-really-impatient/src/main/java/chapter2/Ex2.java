@@ -5,6 +5,7 @@
  */
 package chapter2;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -33,6 +34,7 @@ public class Ex2 {
                                 .limit(5)
                                 .toArray(String[]::new);
         System.out.println("number of times filter method called: " + i);
+        System.out.println("number of long words: " + Arrays.toString(longWords));
     }
 
 }

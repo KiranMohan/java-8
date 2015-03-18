@@ -5,9 +5,6 @@
  */
 package org.ktest.study.java8.stream;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
 import java.util.Arrays;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;

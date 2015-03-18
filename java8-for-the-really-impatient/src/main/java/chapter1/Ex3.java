@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import common.Helper;
-
 /*
  * Using the list(FilenameFilter) method of the java.io.File class, write a 
  * method that returns all files in a given directory with a given extension. 

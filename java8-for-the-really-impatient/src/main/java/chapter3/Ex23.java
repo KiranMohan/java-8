@@ -5,8 +5,6 @@
  */
 package chapter3;
 
-import java.util.function.Function;
-
 
 /**
  * Define a map operation for a class Pair<T> that represents a pair of objects of

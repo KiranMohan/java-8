@@ -4,8 +4,6 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
-import java.util.Comparator;
-
 import org.junit.Test;
 import org.ktest.java8.study.lambdas.datatypes.TelephoneVoice;
 

@@ -13,13 +13,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.stream.Stream;
-
-
-
-
-
-
 import org.junit.Test;
 
 enum Mode {

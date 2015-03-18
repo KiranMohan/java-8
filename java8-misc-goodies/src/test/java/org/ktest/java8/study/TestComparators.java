@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public class TestComparators {

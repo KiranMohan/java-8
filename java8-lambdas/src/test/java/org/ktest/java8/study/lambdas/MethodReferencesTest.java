@@ -39,6 +39,7 @@ public class MethodReferencesTest {
 		// with method references
 		power = Math::pow; // more concise
 		
+		System.out.println(applyFunction(2.0, 4.0, power));
 		System.out.println(applyFunction(2.0, 4.0, Math::pow));
 	    System.out.println(applyFunction(2.0, 4.0, Math::max));
 	}

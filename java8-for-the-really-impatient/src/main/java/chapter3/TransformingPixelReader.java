@@ -80,6 +80,7 @@ class TransformingPixelReader implements javafx.scene.image.PixelReader {
     /* (non-Javadoc)
      * @see javafx.scene.image.PixelReader#getPixelFormat()
      */
+    @SuppressWarnings("rawtypes")
     @Override
     public PixelFormat getPixelFormat() {
         throw new UnsupportedOperationException();
