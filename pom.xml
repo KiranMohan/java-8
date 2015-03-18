@@ -28,6 +28,7 @@
         
         <module>java8-misc-goodies</module>
         <module>java8-for-the-really-impatient</module>
+        <module>java8-date-time-api</module>
     </modules>
     <dependencies>
     	<dependency>
