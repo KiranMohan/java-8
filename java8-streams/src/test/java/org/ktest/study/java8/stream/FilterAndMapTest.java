@@ -42,10 +42,16 @@ public class FilterAndMapTest {
 		// create a list of the characters of the given words
 		List<String> names = Arrays.asList("Ritchie", "Stroustrup", "Gosling", "Wall", "Odersky", "Hickey");
 		
+		Stream<Character> charStream = names.stream()
+				                         .flatMap(s -> s.chars().mapToObj(c -> Character.valueOf((char) c)));
+		Set<Character> charSet = charStream.collect(Collectors.toSet());
 		
-		Set<Character> charStream = names.stream()
-				                         .flatMap(s -> s.chars().mapToObj(c->(char)c))
-				                         .collect(Collectors.toSet());
+		/*
+		 * Eclipse bug: eclipse is unable to resolve the return types here correctly.
+		 Set<Character> charSet = names.stream()
+                .flatMap(s -> s.chars().mapToObj(c->(char)c))
+                .collect(Collectors.toSet());
+         */
 
 		// OR
 		
@@ -53,7 +59,7 @@ public class FilterAndMapTest {
 //										 .flatMapToInt(s -> s.chars())
 //										 .mapToObj(c -> (char)c)
 //										 .collect(Collectors.toSet());
-		System.out.println(charStream);
+		System.out.println(charSet);
 	}
 	
 	

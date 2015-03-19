@@ -81,13 +81,22 @@ public class GroupingAndPartitioningTest {
         // key   = country 
         // value = languages spoken
         // Easy way. A tedious way to do it in CollectingResultsTest.java
-        Map<String, Set<String>> countryLanguagesMap = Stream.of(Locale.getAvailableLocales())
+        Stream<Locale> localeStream = Stream.of(Locale.getAvailableLocales());
+        Map<String, Set<String>> countryLanguagesMap = localeStream.collect(
+                                                                            groupingBy(Locale::getDisplayCountry,
+                                                                                       mapping(Locale::getDisplayLanguage, 
+                                                                                               toSet())
+                                                                                       )
+                                                                            );
+        /*
+         * Eclipse bug: Eclipse cannot resolve the return types here correctly
+         Map<String, Set<String>> countryLanguagesMap = Stream.of(Locale.getAvailableLocales())
                 .collect(
                         groupingBy(Locale::getDisplayCountry,
                            mapping(Locale::getDisplayLanguage, 
                                toSet())
                         )
-                );
+                );*/
         
         System.out.println("Languages in India " + countryLanguagesMap.get("India"));
         System.out.println("--- groupingWithMapping end ---");
