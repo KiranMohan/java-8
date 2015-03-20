@@ -7,9 +7,7 @@ package chapter5;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 
 /**
  * What happens when you add one year to LocalDate.of(2000, 2, 29)? Four years? Four times one year?
