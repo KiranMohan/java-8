@@ -45,7 +45,7 @@ public class TestJavaTimeLocalDate {
         System.out.printf("period %d years, %d months, %d days\n", p.getYears(), p.getMonths(), p.getDays());
         
         long daysUntilChristmas = d1.until(christmasDate, ChronoUnit.DAYS);
-        assertThat(daysUntilChristmas,is(268));
+        assertThat(daysUntilChristmas,is(268l));
     }
     
     @Test
