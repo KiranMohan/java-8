@@ -1,17 +1,18 @@
 package org.ktest.java8.study.lambdas;
 
+import org.junit.Test;
+import org.ktest.java8.study.lambdas.datatypes.MyButton;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-
-import org.ktest.java8.study.lambdas.datatypes.MyButton;
+import static org.junit.Assert.assertThat;
+import static org.ktest.java8.study.lambdas.ComponentFactory.ComponentType.BUTTON;
 
 public class ConstructorReferencesTest {
 
@@ -38,4 +39,14 @@ public class ConstructorReferencesTest {
 		System.out.println(Arrays.toString(labelsArray));
 		assertThat(labelsArray, is(arrayContainingInAnyOrder(labelsList.toArray())));
 	}
+
+    @Test
+    public void test_factory_pattern() {
+        // When
+        Component button = ComponentFactory.createComponent(BUTTON, "Click!");
+
+        // Then
+        assertThat(button, instanceOf(Button.class));
+        assertThat(((Button) button).getLabel(), is("Click!"));
+    }
 }
